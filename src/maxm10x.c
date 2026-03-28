@@ -629,11 +629,12 @@ errors:
 static MAXM10X_status_t _MAXM10X_write_configuration(uint32_t key, uint8_t* value, uint8_t value_size_bytes) {
     // Local variables.
     MAXM10X_status_t status = MAXM10X_SUCCESS;
+    uint8_t payload_size = (8 + value_size_bytes);
     // See p.55 for UBX message format.
     uint8_t ubx_cfg_valset[MAXM10X_UBX_MSG_OVERHEAD_SIZE_BYTES + MAXM10X_UBX_CFG_VALSET_PAYLOAD_SIZE_BYTES_MAX] = {
         0xB5, 0x62,                                                                                 // Preamble.
         0x06, 0x8A,                                                                                 // UBX message class and ID.
-        0x00, 0x00,                                                                                 // Length.
+        (uint8_t) (payload_size >> 0), (uint8_t) (payload_size >> 8),                               // Length.
         0x00,                                                                                       // Version.
         0x01,                                                                                       // Layers.
         0x00, 0x00,                                                                                 // Reserved.
@@ -641,7 +642,6 @@ static MAXM10X_status_t _MAXM10X_write_configuration(uint32_t key, uint8_t* valu
         0, 0, 0, 0, 0, 0, 0, 0,                                                                     // Value (1, 2, 4 or 8 bytes).
         0x00, 0x00                                                                                  // UBX checksum.
     };
-    uint8_t payload_size = (8 + value_size_bytes);
     uint8_t idx = 0;
     // Update value.
     for (idx = 0; idx < value_size_bytes; idx++) {
@@ -665,7 +665,6 @@ static MAXM10X_status_t _MAXM10X_select_nmea_messages(uint32_t nmea_message_id_m
     MAXM10X_status_t status = MAXM10X_SUCCESS;
     uint8_t nmea_message_uart_rate_value = 0;
     uint8_t nmea_idx = 0;
-    uint8_t idx = 0;
     // See p.133 for NMEA messages key.
     uint32_t nmea_message_uart_rate_key[MAXM10X_NMEA_MESSAGE_INDEX_LAST] = {
         0x209100A7, // DTM.
@@ -688,7 +687,7 @@ static MAXM10X_status_t _MAXM10X_select_nmea_messages(uint32_t nmea_message_id_m
         // Enable or disable message.
         nmea_message_uart_rate_value = ((nmea_message_id_mask & (0b1 << nmea_idx)) != 0) ? 1 : 0;
         // Send message.
-        status = _MAXM10X_write_configuration(nmea_message_uart_rate_key[idx], &nmea_message_uart_rate_value, 1);
+        status = _MAXM10X_write_configuration(nmea_message_uart_rate_key[nmea_idx], &nmea_message_uart_rate_value, 1);
         if (status != MAXM10X_SUCCESS) goto errors;
     }
 errors:
