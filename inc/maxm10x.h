@@ -15,6 +15,10 @@
 #include "strings.h"
 #include "types.h"
 
+/*** MAXM10X macros ***/
+
+#define MAXM10X_BOOT_TIME_MS    2000
+
 /*** MAXM10X structures ***/
 
 /*!******************************************************************
