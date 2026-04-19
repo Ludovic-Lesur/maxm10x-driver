@@ -63,6 +63,7 @@ typedef enum {
  * \brief MAXM10X data list.
  *******************************************************************/
 typedef enum {
+    MAXM10X_GPS_DATA_NONE = 0,
 #ifdef MAXM10X_DRIVER_GPS_DATA_TIME
     MAXM10X_GPS_DATA_TIME,
 #endif

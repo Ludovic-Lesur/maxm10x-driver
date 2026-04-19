@@ -711,7 +711,7 @@ MAXM10X_status_t MAXM10X_init(void) {
     maxm10x_ctx.nmea_buffer_idx_write = 0;
     maxm10x_ctx.nmea_buffer_idx_ready = 0;
     maxm10x_ctx.nmea_frame_received_flag = 0;
-    maxm10x_ctx.acquisition.gps_data = MAXM10X_GPS_DATA_LAST;
+    maxm10x_ctx.acquisition.gps_data = MAXM10X_GPS_DATA_NONE;
     maxm10x_ctx.acquisition.process_callback = NULL;
     maxm10x_ctx.acquisition.completion_callback = NULL;
     // Init hardware interface.
@@ -739,7 +739,7 @@ MAXM10X_status_t MAXM10X_start_acquisition(MAXM10X_acquisition_t* acquisition) {
     // Local variables.
     MAXM10X_status_t status = MAXM10X_SUCCESS;
     // Check state.
-    if (maxm10x_ctx.acquisition.gps_data != MAXM10X_GPS_DATA_LAST) {
+    if (maxm10x_ctx.acquisition.gps_data != MAXM10X_GPS_DATA_NONE) {
         status = MAXM10X_ERROR_ACQUISITION_RUNNING;
         goto errors;
     }
@@ -801,7 +801,7 @@ MAXM10X_status_t MAXM10X_stop_acquisition(void) {
     // Local variables.
     MAXM10X_status_t status = MAXM10X_SUCCESS;
     // Release driver.
-    maxm10x_ctx.acquisition.gps_data = MAXM10X_GPS_DATA_LAST;
+    maxm10x_ctx.acquisition.gps_data = MAXM10X_GPS_DATA_NONE;
     // Stop NMEA frames reception.
     status = MAXM10X_HW_stop_rx();
     if (status != MAXM10X_SUCCESS) goto errors;
