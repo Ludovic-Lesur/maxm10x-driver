@@ -259,12 +259,12 @@ static uint8_t _MAXM10X_check_time(MAXM10X_time_t* gps_time) {
     // Local variables.
     uint8_t time_valid_flag = 0;
     // Check time fields.
-    if (((gps_time->date) > 0) && ((gps_time->date) < 32) &&
-        ((gps_time->month) > 0) && ((gps_time->month) < 13) &&
-        ((gps_time->year) > 2023) && ((gps_time->year) < 2094) &&
-        ((gps_time->hours) < 24) &&
-        ((gps_time->minutes) < 60) &&
-        ((gps_time->seconds) < 60))
+    if (((gps_time->date) >= MATH_DATE_MIN) && ((gps_time->date) <= MATH_DATE_MAX) &&
+        ((gps_time->month) >= MATH_MONTH_MIN) && ((gps_time->month) <= MATH_MONTH_MAX) &&
+        ((gps_time->year) >= MATH_YEAR_MIN) && ((gps_time->year) <= MATH_YEAR_MAX) &&
+        ((gps_time->hours) < MATH_HOURS_PER_DAY) &&
+        ((gps_time->minutes) < MATH_MINUTES_PER_HOUR) &&
+        ((gps_time->seconds) < MATH_SECONDS_PER_MINUTE))
     {
         time_valid_flag = 1;
     }
@@ -278,8 +278,8 @@ static uint8_t _MAXM10X_check_position(MAXM10X_position_t* gps_position) {
     // Local variables.
     uint8_t position_valid_flag = 0;
     // Check position fields.
-    if ((gps_position->lat_degrees < 90) && (gps_position->lat_minutes < 60) &&(gps_position->lat_seconds < 100000) &&
-        (gps_position->long_degrees < 180) && (gps_position->long_minutes < 60) && (gps_position->long_seconds < 100000))
+    if ((gps_position->lat_degrees < MATH_LATITUDE_DEGREES_MAX) && (gps_position->lat_minutes < MATH_LATITUDE_MINUTES_MAX) && (gps_position->lat_seconds < MAXM10X_SECONDS_MULTIPLICATOR) &&
+        (gps_position->long_degrees < MATH_LONGITUDE_DEGREES_MAX) && (gps_position->long_minutes < MATH_LONGITUDE_MINUTES_MAX) && (gps_position->long_seconds < MAXM10X_SECONDS_MULTIPLICATOR))
     {
         position_valid_flag = 1;
     }

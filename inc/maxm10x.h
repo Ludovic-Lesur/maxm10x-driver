@@ -17,7 +17,8 @@
 
 /*** MAXM10X macros ***/
 
-#define MAXM10X_BOOT_TIME_MS    2000
+#define MAXM10X_BOOT_TIME_MS            2000
+#define MAXM10X_SECONDS_MULTIPLICATOR   100000
 
 /*** MAXM10X structures ***/
 
